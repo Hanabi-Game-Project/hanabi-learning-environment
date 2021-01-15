@@ -66,10 +66,10 @@ class HanabiObservation {
   std::vector<double> PlayablePercent() const;
   bool HandPossible(std::vector<HanabiCard>& hand) const;
 
-
   // getter for pickle
   const HanabiState* ParentState() const { return parent_state_; }
   int ObservingPlayer() const { return observing_player_; }
+
   const HanabiCard GetCardToDiscard(int index) const;
   
  private:
@@ -86,6 +86,7 @@ class HanabiObservation {
   const HanabiGame* parent_game_ = nullptr;
   const HanabiState* parent_state_;
   const std::vector<int> GetDefaultCardCounter() const;
+
 };
 
 }  // namespace hanabi_learning_env
