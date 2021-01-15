@@ -11,7 +11,30 @@ PYBIND11_MAKE_OPAQUE(HanabiObservationVector);
 
 void wrap_hanabi_observation(py::module& m) {
   py::class_<HanabiObservationVector>(m, "HanabiObservationVector")
+    // .def(py::init())
+    .def(py::pickle(
+        // __getstate__
+        [](const HanabiObservationVector &vec) {
+            py::list obs;
+            for (const auto& item : vec)
+            obs.append(item);
+            return obs;
+        },
+        // __setitem__
+        [](py::list t) {
+            std::vector<hle::HanabiObservation> obs_vec;    
+            for (py::handle obj : t) {    
+                hle::HanabiObservation obs = obj.cast<hle::HanabiObservation>();    
+                obs_vec.push_back(obs);    
+                }
+            return obs_vec;
+        }
+    ))
+    
+    .def("append", [](HanabiObservationVector& v, const hle::HanabiObservation& m) { v.push_back(m); })
     .def("__len__", [](const HanabiObservationVector &v) { return v.size(); })
+    // .def("__getitem__", [](const HanabiObservationVector& v, const int i) { return v.at(i); })
+    // .def("__setitem__", [](HanabiObservationVector& v, const int i, const hle::HanabiObservation& m) { v.at(i) = m; })
     .def("__iter__", [](HanabiObservationVector &v) {
        return py::make_iterator(v.begin(), v.end());
     }, py::keep_alive<0, 1>()); /* Keep vector alive while iterator is used */
