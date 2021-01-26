@@ -64,6 +64,7 @@ class HanabiObservation {
   }
   // returns for each card in hand probability of card being playable on fireworks
   std::vector<double> PlayablePercent() const;
+  std::vector<double> DiscardablePercent() const;
   bool HandPossible(std::vector<HanabiCard>& hand) const;
 
   // getter for pickle

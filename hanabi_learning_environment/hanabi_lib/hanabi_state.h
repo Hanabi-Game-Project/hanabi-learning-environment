@@ -112,6 +112,18 @@ class HanabiState {
     return move_history_;
   }
 
+  // for shaping, metrics that are player independent
+  // playability / discardability of card if no hints are given
+  // based on discards and fireworks
+   double AveragePlayability() const;
+   double AverageDiscardability() const;
+   // playability / discardability of all cards in hands
+   // based on discards, fireworks and given hints
+   std::vector<double> CommonPlayability() const;
+   std::vector<double> CommonDiscardability() const;
+   // count unknown cards by type does not include cards in hand)
+   const std::vector<int> GetCommonCardCounter() const;
+
  private:
   // Add card to table if possible, if not lose a life token.
   // Returns <scored,information_token_added>

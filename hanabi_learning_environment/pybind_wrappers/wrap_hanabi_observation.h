@@ -114,6 +114,10 @@ void wrap_hanabi_observation(py::module& m) {
 		&hle::HanabiObservation::PlayablePercent,
 		"Probability of card being playable on fireworks"
 	)
+	.def("discardable_percent",
+		&hle::HanabiObservation::DiscardablePercent,
+		"Probability of card being discardable"
+	)
 	.def("hand_possible",
 		(bool (hle::HanabiObservation::*) (const std::vector<hle::HanabiCard>&))
 		&hle::HanabiObservation::HandPossible,

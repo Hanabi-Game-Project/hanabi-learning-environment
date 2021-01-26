@@ -103,7 +103,22 @@ void wrap_hanabi_state(py::module& m) {
         &hle::HanabiState::MoveHistory,
         "Sequence of moves from beginning of game. Stored as <move, actor>."
     )
-    
+    .def("average_playability",
+         &hle::HanabiState::AveragePlayability,
+         "playability of card if no hints are given"
+    )
+    .def("average_discardability",
+         &hle::HanabiState::AverageDiscardability,
+         "discardability of card if no hints are given"
+    )
+	.def("common_playability",
+	     &hle::HanabiState::CommonPlayability,
+	     "list playability of all cards in hands, based on hints and common knowledge"
+	)
+	.def("common_discardability",
+	     &hle::HanabiState::CommonDiscardability,
+	     "list discardability of all cards in hands, based on hints and common knowledge"
+	)
     .def("__str__", &hle::HanabiState::ToString)
     .def("__repr__", &hanabi_state_repr) 
 
