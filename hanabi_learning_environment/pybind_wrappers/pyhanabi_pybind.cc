@@ -10,8 +10,10 @@
 #include "wrap_hanabi_observation.h"
 #include "wrap_hanabi_parallel_env.h"
 #include "wrap_hanabi_encoder.h"
+#include "wrap_reward_shaper.h"
 
 PYBIND11_MODULE(pyhanabi_pybind, m) {
+  wrap_reward_shaper(m);
   wrap_hanabi_card(m);
   wrap_hanabi_move(m);
   wrap_hanabi_hand(m);

@@ -10,7 +10,7 @@ using HanabiObservationVector = std::vector<hle::HanabiObservation>;
 PYBIND11_MAKE_OPAQUE(HanabiObservationVector);
 
 void wrap_hanabi_observation(py::module& m) {
-  py::class_<HanabiObservationVector>(m, "HanabiObservationVector")
+    py::class_<HanabiObservationVector>(m, "HanabiObservationVector")
     // .def(py::init())
     .def(py::pickle(
         // __getstate__
@@ -30,40 +30,40 @@ void wrap_hanabi_observation(py::module& m) {
             return obs_vec;
         }
     ))
-    
+
     .def("append", [](HanabiObservationVector& v, const hle::HanabiObservation& m) { v.push_back(m); })
     .def("__len__", [](const HanabiObservationVector &v) { return v.size(); })
     // .def("__getitem__", [](const HanabiObservationVector& v, const int i) { return v.at(i); })
     // .def("__setitem__", [](HanabiObservationVector& v, const int i, const hle::HanabiObservation& m) { v.at(i) = m; })
     .def("__iter__", [](HanabiObservationVector &v) {
-       return py::make_iterator(v.begin(), v.end());
+        return py::make_iterator(v.begin(), v.end());
     }, py::keep_alive<0, 1>()); /* Keep vector alive while iterator is used */
-    
-  py::class_<hle::HanabiObservation>(m, "HanabiObservation")
+
+    py::class_<hle::HanabiObservation>(m, "HanabiObservation")
     .def(py::init<hle::HanabiState&, const int>(),
-         py::arg("state"),
-         py::arg("observing_player")
+            py::arg("state"),
+            py::arg("observing_player")
     )
-	.def(py::pickle(
-			// __getstate__
-			[](const hle::HanabiObservation &obs) {
-				// Return a tuple that fully encodes the state of the object
-				return py::make_tuple(obs.ParentState(), obs.ObservingPlayer());
-  	  	  	  },
-			  // __setstate__
-			  [](py::tuple t) {
-  	  	  		  if (t.size() != 2)
-  	  	  			  throw std::runtime_error("Invalid state!");
+    .def(py::pickle(
+            // __getstate__
+            [](const hle::HanabiObservation &obs) {
+                // Return a tuple that fully encodes the state of the object
+                return py::make_tuple(obs.ParentState(), obs.ObservingPlayer());
+                },
+                // __setstate__
+                [](py::tuple t) {
+                    if (t.size() != 2)
+                        throw std::runtime_error("Invalid state!");
 
-  	  	  		  // Create a new C++ instance
+                    // Create a new C++ instance
 
-  	  	  		  hle::HanabiObservation obs(t[0].cast<hle::HanabiState>(),
-  	  	  				  t[1].cast<int>());
+                    hle::HanabiObservation obs(t[0].cast<hle::HanabiState>(),
+                            t[1].cast<int>());
 
-  	  	  		  return obs;
-  	  	  	  }
-		)
-	)
+                    return obs;
+                }
+        )
+    )
     .def_property_readonly(
         "current_player_offset",
         &hle::HanabiObservation::CurPlayerOffset,
@@ -101,35 +101,35 @@ void wrap_hanabi_observation(py::module& m) {
     .def_property_readonly("life_tokens", &hle::HanabiObservation::LifeTokens)
     .def_property_readonly("legal_moves", &hle::HanabiObservation::LegalMoves)
     .def("card_playable_on_fireworks",
-         (bool (hle::HanabiObservation::*) (int, int) const)
+            (bool (hle::HanabiObservation::*) (int, int) const)
             &hle::HanabiObservation::CardPlayableOnFireworks,
-         "Can a card with color and rank be played on fireworks pile?"
+            "Can a card with color and rank be played on fireworks pile?"
     )
     .def("card_playable_on_fireworks",
-         (bool (hle::HanabiObservation::*) (hle::HanabiCard) const)
+            (bool (hle::HanabiObservation::*) (hle::HanabiCard) const)
             &hle::HanabiObservation::CardPlayableOnFireworks,
-         "Can the card be played on fireworks pile?"
+            "Can the card be played on fireworks pile?"
     )
-	.def("playable_percent",
-		&hle::HanabiObservation::PlayablePercent,
-		"Probability of card being playable on fireworks"
-	)
-	.def("discardable_percent",
-		&hle::HanabiObservation::DiscardablePercent,
-		"Probability of card being discardable"
-	)
-	.def("hand_possible",
-		(bool (hle::HanabiObservation::*) (const std::vector<hle::HanabiCard>&))
-		&hle::HanabiObservation::HandPossible,
-		py::arg("cards"),
-		"Probability of card being playable on fireworks"
-	)
+    .def("playable_percent",
+        &hle::HanabiObservation::PlayablePercent,
+        "Probability of card being playable on fireworks"
+    )
+    .def("discardable_percent",
+        &hle::HanabiObservation::DiscardablePercent,
+        "Probability of card being discardable"
+    )
+    .def("hand_possible",
+        (bool (hle::HanabiObservation::*) (const std::vector<hle::HanabiCard>&))
+        &hle::HanabiObservation::HandPossible,
+        py::arg("cards"),
+        "Probability of card being playable on fireworks"
+    )
     .def("card_to_discard",
-		(hle::HanabiCard (hle::HanabiObservation::*) (int) const)
-		&hle::HanabiObservation::GetCardToDiscard,
-		py::arg("index"),
-		"get card to discard by index"
-	)
+        (hle::HanabiCard (hle::HanabiObservation::*) (int) const)
+        &hle::HanabiObservation::GetCardToDiscard,
+        py::arg("index"),
+        "get card to discard by index"
+    )
     .def("__str__", &hle::HanabiObservation::ToString)
     .def("__repr__", &hanabi_observation_repr)
     .doc() = "Agent observation of a HanabiState.";

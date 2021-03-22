@@ -47,9 +47,11 @@ class HanabiParallelEnv {
      *  \param observation_len Length of a single flat encoded observation.
      *  \param max_moves Total number of possible moves.
      */
-    HanabiEncodedBatchObservation(const int n_states, const int observation_len,
-        const int max_moves)
-      : observation(n_states * observation_len, 0),
+    HanabiEncodedBatchObservation(
+        const int n_states, 
+        const int observation_len,
+        const int max_moves
+        ) : observation(n_states * observation_len, 0),
         legal_moves(n_states * max_moves, 0),
         scores(n_states, 0),
         done(n_states, false),

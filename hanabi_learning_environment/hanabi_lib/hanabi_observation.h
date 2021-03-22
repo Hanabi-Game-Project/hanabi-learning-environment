@@ -73,6 +73,12 @@ class HanabiObservation {
 
   const HanabiCard GetCardToDiscard(int index) const;
   
+  int get_max_score ( int color ) ; 
+
+  void calculate_max_score ( int color ) ; 
+
+  
+
  private:
   int cur_player_offset_;  // offset of current_player from observing_player
   int observing_player_;
@@ -87,6 +93,7 @@ class HanabiObservation {
   const HanabiGame* parent_game_ = nullptr;
   const HanabiState* parent_state_;
   const std::vector<int> GetDefaultCardCounter() const;
+  std::vector<int> max_score_stack ; 
 
 };
 
