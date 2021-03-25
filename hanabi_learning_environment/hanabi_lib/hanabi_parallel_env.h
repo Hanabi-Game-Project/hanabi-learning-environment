@@ -41,7 +41,7 @@ class HanabiParallelEnv {
    */
   struct HanabiEncodedBatchObservation {
 
-    /** \brief Contruct a batched observation of given shape.
+    /** \brief Construct a batched observation of given shape.
      *
      *  \param n_states Number of states.
      *  \param observation_len Length of a single flat encoded observation.

@@ -69,13 +69,14 @@ class HanabiObservation {
 
   // getter for pickle
   const HanabiState* ParentState() const { return parent_state_; }
+  const HanabiState &ParentStateRef() { return *parent_state_; }
   int ObservingPlayer() const { return observing_player_; }
 
   const HanabiCard GetCardToDiscard(int index) const;
   
-  int get_max_score ( int color ) ; 
+  // int get_max_score ( int color ) ; 
 
-  void calculate_max_score ( int color ) ; 
+  // void calculate_max_score ( int color ) ; 
 
   
 
@@ -93,7 +94,7 @@ class HanabiObservation {
   const HanabiGame* parent_game_ = nullptr;
   const HanabiState* parent_state_;
   const std::vector<int> GetDefaultCardCounter() const;
-  std::vector<int> max_score_stack ; 
+  // std::vector<int> max_score_stack ; 
 
 };
 

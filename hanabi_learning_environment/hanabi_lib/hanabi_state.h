@@ -31,7 +31,10 @@ constexpr int kChancePlayerId = -1;
 
 class HanabiState {
  public:
-  class HanabiDeck {
+   
+
+   class HanabiDeck
+   {
    public:
     explicit HanabiDeck(const HanabiGame& game);
     // DealCard returns invalid card on failure.
@@ -104,6 +107,7 @@ class HanabiState {
   const std::vector<HanabiHand>& Hands() const { return hands_; }
   const std::vector<int>& Fireworks() const { return fireworks_; }
   const HanabiGame* ParentGame() const { return parent_game_; }
+  const HanabiGame &ParentGameRef() const { return *parent_game_; }
   const HanabiDeck& Deck() const { return deck_; }
   // Get the discard pile (the element at the back is the most recent discard.)
   const std::vector<HanabiCard>& DiscardPile() const { return discard_pile_; }
@@ -123,6 +127,7 @@ class HanabiState {
    std::vector<double> CommonDiscardability() const;
    // count unknown cards by type does not include cards in hand)
    const std::vector<int> GetCommonCardCounter() const;
+   const int CalculateMaxScore(int color) const ;
 
  private:
   // Add card to table if possible, if not lose a life token.

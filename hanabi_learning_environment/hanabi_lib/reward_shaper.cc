@@ -134,13 +134,23 @@ std::tuple<double, int> hanabi_learning_env::RewardShaper::PlayShape(
     // If the cards below the rank of same color are in discard pile, we can't play it 
 
     
-    if (! observation.CardPlayableOnFireworks(move.Color(), move.Rank()) ){
-        // return this->unshaped ; 
+    if (! observation.CardPlayableOnFireworks(observation.GetCardToDiscard(move.CardIndex())) ) {
 
-        this -> DiscardShape(observation, move) ;
+        std::tuple<double, int> discard_shape = this-> DiscardShape(observation, move);
 
+        // If discard shaping happened -> Return discard  type
+        if (std::get<1>(discard_shape) == this->shape_type.DISCARD_LAST_OF_KIND){
+            double penalty = this->params.w_play_penalty + this->m_play_penalty;
+            std::get<0>(discard_shape) += penalty ; 
+            return discard_shape ;  
+        }
+        else {
+            // if not discard shape -> Return play type
+            std::get<1>(discard_shape) = this -> shape_type.RISKY ; 
+            return discard_shape ; 
+        }
     }
-    else{
+    else {
         try {
             prob = observation.PlayablePercent()[move.CardIndex()];
         }
@@ -179,18 +189,17 @@ std::tuple<double, int> hanabi_learning_env::RewardShaper::DiscardShape(
     }
 
     int count_card = 0;
-    int max_score = observation.get_max_score(discarded_Card.Color()) ;  
-
+    int max_score = observation.ParentState()->CalculateMaxScore(discarded_Card.Color()) ; 
+    
     for(int i=0; i<discard_pile.size(); i++){
-        if (discarded_Card.Rank() == discard_pile[i].Rank() 
-                && discarded_Card.Color() == discard_pile[i].Color()){
+        if (discarded_Card == discard_pile[i]){
                     count_card ++ ; 
         }
 
     }
 
     if ( count_card 
-            == observation.ParentGameRef().NumberCardInstances(discarded_Card.Color(), discarded_Card.Rank()) - 1 ){
+            == observation.ParentGameRef().NumberCardInstances(discarded_Card) - 1 ){
 
         if ( discarded_Card.Rank() < max_score){
             return  std::make_tuple(

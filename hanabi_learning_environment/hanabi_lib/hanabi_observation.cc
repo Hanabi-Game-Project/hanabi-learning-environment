@@ -98,56 +98,62 @@ HanabiObservation::HanabiObservation(const HanabiState& state,
     }
   }
 
-	for ( int i=0; i<5; i++){
-		this -> max_score_stack.push_back(5) ; 
-	}
 }
 
-int HanabiObservation::get_max_score( int color ){
+// int HanabiObservation::get_max_score( int color ){
 
-	this -> calculate_max_score(color) ;
+// 	this -> calculate_max_score(color) ;
 
-	return this -> max_score_stack[color] ; 
-}
-
-void HanabiObservation::calculate_max_score( int color ){
-
-	std::vector<hanabi_learning_env::HanabiCard> discard_pile = this->DiscardPile();
-
-	// HanabiGame game = HanabiGame() ; 
-
-	// parse through the discard pile and check for the card
-	std::vector<int> rank_counter ;
+// 	return this -> max_score_stack[color] ; 
+// }
 
 
+// int HanabiObservation::get_max_score( int color ){
 
-	for ( int i=0; i< this -> ParentGameRef().NumRanks(); i++ ){
-		rank_counter.push_back(0) ; 
-	}
+// 	std::vector<hanabi_learning_env::HanabiCard> discard_pile = this->DiscardPile();
 
-	for( int i=0; i<rank_counter.size(); i++){
+// 	// HanabiGame game = HanabiGame() ; 
 
-		for (int j=0; j < discard_pile.size(); j++){
-			if (discard_pile[j].Rank() == i &&  discard_pile[i].Color() == color ) {
+// 	// parse through the discard pile and check for the card
+// 	std::vector<int> rank_counter ;
 
-				rank_counter[i] ++ ;
-			}		
-		}
+// 	int max_score = 5 ; 
 
-		// If all instances of a rank in this color are in discard pile, and the 
-		// maximum achievable score is higher than this rank in the rank_counter, then
-		// we basically set the maximum score to this rank. 
-		if( rank_counter[i] == this->ParentGameRef().NumberCardInstances(color, i) 
-					&& this -> max_score_stack[color] > rank_counter[i] ){
+// 	// std::vector<int> max_score_stack ;
 
-			this->max_score_stack[color] = rank_counter[i];
-		} 
+// 	// for (int i = 0; i < 5; i++){
 
-	}
+// 	// 	max_score_stack.push_back(5);
+// 	// }
 
+// 	for (int i = 0; i < this->ParentGameRef().NumRanks(); i++){
+		
+// 		rank_counter.push_back(0) ;
+// 	}
+
+// 	for( int i=0; i<rank_counter.size(); i++){
+
+// 		for (int j=0; j < discard_pile.size(); j++){
+// 			if (discard_pile[j].Rank() == i &&  discard_pile[i].Color() == color ) {
+
+// 				rank_counter[i] ++ ;
+// 			}		
+// 		}
+
+// 		// If all instances of a rank in this color are in discard pile, and the 
+// 		// maximum achievable score is higher than this rank in the rank_counter, then
+// 		// we basically set the maximum score to this rank. 
+// 		if( rank_counter[i] == this->ParentGameRef().NumberCardInstances(color, i) 
+// 					&& rank_counter[i] < max_score  ){
+
+// 			max_score = rank_counter[i] ; 
+// 		} 
+
+// 	}
+
+// 	return max_score ; 
 	
-	
-}
+// }
 
 
 std::string HanabiObservation::ToString() const {

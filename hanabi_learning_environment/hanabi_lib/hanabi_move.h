@@ -35,7 +35,7 @@ class HanabiMove {
   enum Type { kInvalid, kPlay, kDiscard, kRevealColor, kRevealRank, kDeal };
 
   HanabiMove(Type move_type, int8_t card_index, int8_t target_offset,
-             int8_t color, int8_t rank)
+              int8_t color, int8_t rank)
       : move_type_(move_type),
         card_index_(card_index),
         target_offset_(target_offset),
@@ -43,7 +43,7 @@ class HanabiMove {
         rank_(rank) {}
 
   HanabiMove(Type move_type, int8_t card_index, int8_t target_offset,
-             HanabiCard card)
+              HanabiCard card)
       : move_type_(move_type),
         card_index_(card_index),
         target_offset_(target_offset),

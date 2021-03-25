@@ -58,7 +58,7 @@ class HanabiHand {
 
   class CardKnowledge {
     // Hinted knowledge about color and rank of an initially unknown card.
-   public:
+  public:
     CardKnowledge(int num_colors, int num_ranks);
     // Returns number of possible colors being tracked.
     int NumColors() const { return color_.Range(); }
@@ -84,16 +84,16 @@ class HanabiHand {
     void ApplyIsNotRankHint(int rank) { rank_.ApplyIsNotValueHint(rank); }
     std::string ToString() const;
 
-   private:
+  private:
     ValueKnowledge color_;
     ValueKnowledge rank_;
   };
 
   HanabiHand() {}
   HanabiHand(const std::vector<HanabiCard>& cards,
-		  const std::vector<HanabiHand::CardKnowledge>& knowledge):
-	  cards_(cards),
-	  card_knowledge_(knowledge){}
+    const std::vector<HanabiHand::CardKnowledge>& knowledge):
+    cards_(cards),
+    card_knowledge_(knowledge){}
   HanabiHand(const HanabiHand& hand)
       : cards_(hand.cards_), card_knowledge_(hand.card_knowledge_) {}
   // Copy hand. Hide cards (set to invalid) if hide_cards is true.
@@ -119,10 +119,10 @@ class HanabiHand {
   uint8_t RevealColor(int color);
   std::string ToString() const;
 
- private:
+  private:
   // A set of cards and knowledge about them.
-  std::vector<HanabiCard> cards_;
-  std::vector<CardKnowledge> card_knowledge_;
+    std::vector<HanabiCard> cards_;
+    std::vector<CardKnowledge> card_knowledge_;
 };
 
 }  // namespace hanabi_learning_env
