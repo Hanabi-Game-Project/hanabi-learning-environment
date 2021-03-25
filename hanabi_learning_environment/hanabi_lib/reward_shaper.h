@@ -35,23 +35,6 @@
 
 namespace hanabi_learning_env {
 
-    struct ShapingType{
-        
-        ShapingType(
-            const int none = 0,
-            const int risky = 1,
-            const int discard_last_of_kind = 2,
-            const int conservative = 3) :   NONE(none),
-                                            RISKY(risky),
-                                            DISCARD_LAST_OF_KIND(discard_last_of_kind),
-                                            CONSERVATIVE(conservative) {}
-
-        int NONE;
-        int RISKY;
-        int DISCARD_LAST_OF_KIND;
-        int CONSERVATIVE;
-    };
-
     struct RewardShapingParams
     {
 
@@ -83,6 +66,8 @@ namespace hanabi_learning_env {
 
         public:
 
+    	enum Type { kNone, kRisky, kDiscardLastOfKind, kConservative};
+
         /** \brief Constructor to assign default values
          *  \param performance Performance parameter to calculate the reward and penalties
          *  \param m_play_penalty Penalty for each play 
@@ -92,21 +77,13 @@ namespace hanabi_learning_env {
          *  \param shape_type     Scheme to be used for shaping
          */ 
         RewardShaper(
-            double performance = 0.,
-            double m_play_penalty = 0.,
-            double m_play_reward = 0.,
-            int num_ranks = -1 ,
-            RewardShapingParams params = hanabi_learning_env::RewardShapingParams (),
-            ShapingType shape_type = ShapingType(0, 1, 2, 3)
+            RewardShapingParams params = hanabi_learning_env::RewardShapingParams()
         ) {
-            this->performance = performance;
-            this->m_play_penalty = m_play_penalty;
-            this->m_play_reward = m_play_reward;
-            this->num_ranks = num_ranks;
-            this->shape_type = shape_type;
-            this->unshaped = std::make_tuple(0., this->shape_type.NONE);
+            this->performance = 0;
+            this->m_play_penalty = 0;
+            this->m_play_reward = 0;
+            this->unshaped = std::make_tuple(0., Type::kNone);
             this->params = params;
-            
         }
 
         /** \brief Return the performance parameter
@@ -124,49 +101,42 @@ namespace hanabi_learning_env {
          *  \param observation Vector of Observations
          *  \param move        The current move that will determine the shaping
          */
-        std::tuple<std::vector<double>, std::vector<int>> Shape (
+        std::tuple<std::vector<double>, std::vector<Type>> Shape (
             std::vector<HanabiObservation> observations, 
             std::vector<HanabiMove> moves
             ) ; 
-        
 
-        
         /** \brief Calculate the shape of the reward based on the move and observation
          *  \param observation Observation based on the move
          *  \param move        The current move that will determine the shaping
          */ 
-        std::tuple<double, int> Calculate(HanabiObservation observation, HanabiMove move) ;
+        std::tuple<double, Type> Calculate(HanabiObservation observation, HanabiMove move) ;
 
         /** \brief Shape the reward for a hint move
          *  \param observation Observation based on the move
          *  \param move        The current move that will determine the shaping
          */
-        std::tuple<double, int> HintShape(HanabiObservation observation, HanabiMove move);
+        std::tuple<double, Type> HintShape(HanabiObservation observation, HanabiMove move);
 
         /** \brief Shape the reward for a play move
          *  \param observation Observation based on the move
          *  \param move        The current move that will determine the shaping
          */
-        std::tuple<double, int> PlayShape(HanabiObservation observation, HanabiMove move) ;
+        std::tuple<double, Type> PlayShape(HanabiObservation observation, HanabiMove move) ;
 
         /** \brief Shape the reward for a discard move
          *  \param observation Observation based on the move
          *  \param move        The current move that will determine the shaping
          */
-        std::tuple<double, int> DiscardShape ( HanabiObservation observation, HanabiMove move) ; 
+        std::tuple<double, Type> DiscardShape ( HanabiObservation observation, HanabiMove move) ;
 
         private:
         
-        double performance;
-        double m_play_penalty;
-        double m_play_reward;
-        int num_ranks;
-        int max_reachable_reward ; 
-
-        RewardShapingParams params;
-        ShapingType shape_type;
-        std::tuple<double, int> unshaped;
-        // std::vector<int> misplay_tracker ; 
+			double performance;
+			double m_play_penalty;
+			double m_play_reward;
+			RewardShapingParams params;
+			std::tuple<double, Type> unshaped;
     };
 
 }

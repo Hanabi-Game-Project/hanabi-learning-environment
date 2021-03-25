@@ -14,22 +14,6 @@ namespace hle = hanabi_learning_env;
 
 void wrap_reward_shaper(py::module &m){
 
-    
-    py::class_<hle::ShapingType>(m, "ShapingType")
-    .def(
-        py::init<
-                const int, 
-                const int, 
-                const int, 
-                const int>(), 
-        py::arg("none") = 0, 
-        py::arg("risky") = 1, 
-        py::arg("discard_last_of_kind") = 2, 
-        py::arg("conservative") = 3                
-    )
-    .doc() = "Class for encoding the shaping type" ; 
-    
-    
     py::class_<hle::RewardShapingParams>(m, "RewardShapingParams")
     .def(
         py::init<bool,
@@ -47,23 +31,15 @@ void wrap_reward_shaper(py::module &m){
         py::arg("m_play_reward") = 0., 
         py::arg("penalty_last_of_kind") = 0. 
     )
+	//.def_property_readonly("shaper", &hle::RewardShapingParams::shaper)
     .doc() = "Class to store the parameters to be used in Reward Shaping";
 
-    py::class_<hle::RewardShaper>(m, "RewardShaper")
+    py::class_<hle::RewardShaper> reward_shaper(m, "RewardShaper");
+
+    reward_shaper
     .def(
-        py::init<   double, 
-                    double, 
-                    double, 
-                    int, 
-                    hle::RewardShapingParams,
-                    hle::ShapingType
-                >(),
-        py::arg("performance") = 0., 
-        py::arg("m_play_penalty") = 0., 
-        py::arg("m_play_reward") = 0., 
-        py::arg("num_ranks") = -1,
-        py::arg("params") = hle::RewardShapingParams(),
-        py::arg("shape_type") = hle::ShapingType(0, 1, 2, 3)
+        py::init<hle::RewardShapingParams>(),
+        py::arg("params") = hle::RewardShapingParams()
     )
     .def(
         "get_performance",
@@ -82,9 +58,16 @@ void wrap_reward_shaper(py::module &m){
         "shape",
         &hle::RewardShaper::Shape, 
         py::arg("observations"), 
-        py::arg("moves"), 
+        py::arg("moves"),
         "Calculate the shape of the rewards based on a set of moves and observations."
     )
     .doc() = "A class to shape rewards based on teh moves and observations"
     ;
+
+    py::enum_<hle::RewardShaper::Type>(reward_shaper, "Type")
+      .value("kNone", hle::RewardShaper::Type::kNone)
+      .value("kRisky", hle::RewardShaper::Type::kRisky)
+      .value("kDiscardLastOfKind", hle::RewardShaper::Type::kDiscardLastOfKind)
+      .value("kConservative", hle::RewardShaper::Type::kConservative)
+      .export_values();
 }

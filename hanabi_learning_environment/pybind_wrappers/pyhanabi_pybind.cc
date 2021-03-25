@@ -13,7 +13,6 @@
 #include "wrap_reward_shaper.h"
 
 PYBIND11_MODULE(pyhanabi_pybind, m) {
-  wrap_reward_shaper(m);
   wrap_hanabi_card(m);
   wrap_hanabi_move(m);
   wrap_hanabi_hand(m);
@@ -23,5 +22,6 @@ PYBIND11_MODULE(pyhanabi_pybind, m) {
   wrap_hanabi_observation(m);
   wrap_hanabi_parallel_env(m);
   wrap_hanabi_encoder(m);
+  wrap_reward_shaper(m);
   m.doc() = "Python interface to C++ Hanabi library using pybind11";
 }

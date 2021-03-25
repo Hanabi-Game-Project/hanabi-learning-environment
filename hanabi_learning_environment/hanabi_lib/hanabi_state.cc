@@ -596,37 +596,27 @@ const int HanabiState::CalculateMaxScore(int color) const {
   std::vector<hanabi_learning_env::HanabiCard> discard_pile = this->DiscardPile();
 
 
-  // parse through the discard pile and check for the card
-  std::vector<int> rank_counter;
-
   int max_score = 5;
 
-
-  for (int i = 0; i < this->ParentGameRef().NumRanks(); i++)
+  for (int iRank = 0; iRank < this->ParentGameRef().NumRanks(); iRank++)
   {
 
-    rank_counter.push_back(0);
-  }
-
-  for (int i = 0; i < rank_counter.size(); i++)
-  {
-
-    for (int j = 0; j < discard_pile.size(); j++)
+	int rank_counter = 0;
+	// parse through the discard pile and check for the card
+    for (int iCard = 0; iCard < discard_pile.size(); iCard++)
     {
-      if (discard_pile[j].Rank() == i && discard_pile[i].Color() == color)
+      if (discard_pile[iCard].Rank() == iRank && discard_pile[iCard].Color() == color)
       {
-
-        rank_counter[i]++;
+        rank_counter++;
       }
     }
 
-    // If all instances of a rank in this color are in discard pile, and the
-    // maximum achievable score is higher than this rank in the rank_counter, then
+    // If all instances of a rank in this color are in discard pile,
     // we basically set the maximum score to this rank.
-    if (rank_counter[i] == this->ParentGameRef().NumberCardInstances(color, i) && rank_counter[i] < max_score)
+    if (rank_counter == this->ParentGameRef().NumberCardInstances(color, iRank))
     {
-
-      max_score = rank_counter[i];
+      max_score = iRank;
+      break;
     }
   }
 
