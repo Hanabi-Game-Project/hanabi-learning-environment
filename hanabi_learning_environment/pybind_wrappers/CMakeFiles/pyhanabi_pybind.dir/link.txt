@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -O2 -std=c++11 -fPIC -fopenmp  -shared  -o pyhanabi_pybind.cpython-38-x86_64-linux-gnu.so CMakeFiles/pyhanabi_pybind.dir/pyhanabi_pybind.cc.o -flto ../hanabi_lib/libhanabi.a 
